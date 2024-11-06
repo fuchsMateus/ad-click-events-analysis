@@ -24,17 +24,14 @@ public class Main {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // Checkpointing configuration for fault tolerance
         env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
         env.getCheckpointConfig().setCheckpointTimeout(60000);
         env.getCheckpointConfig().setCheckpointStorage("s3://click-event-analysis/flink-checkpoints");
         env.getCheckpointConfig().setExternalizedCheckpointCleanup(CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION);
 
-        // Avro schema configuration
         InputStream avroSchemaStream = Main.class.getClassLoader().getResourceAsStream("avro/click_event.avsc");
         Schema schema = new Schema.Parser().parse(avroSchemaStream);
 
-        // Kafka Source configuration
         KafkaSource<GenericRecord> kafkaSource = KafkaSource.<GenericRecord>builder()
                 .setBootstrapServers("kafka:9093")
                 .setGroupId("flink-click-event-group")
@@ -43,7 +40,6 @@ public class Main {
                 .setValueOnlyDeserializer(AvroDeserializationSchema.forGeneric(schema))
                 .build();
 
-        // Creating the DataStream from the Kafka Source
         DataStream<GenericRecord> stream = env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "Kafka Source")
                 .setParallelism(4);
 
@@ -52,7 +48,7 @@ public class Main {
                 .map(event -> new CategoryRegion(
                         event.get("location").toString(),
                         event.get("category").toString(),
-                        1L // Inicia com um clique
+                        1L
                 ))
                 .keyBy(categoryRegion -> categoryRegion.getLocation() + "|" + categoryRegion.getCategory())
                 .window(ProcessingTimeSessionWindows.withGap(Time.minutes(1)))

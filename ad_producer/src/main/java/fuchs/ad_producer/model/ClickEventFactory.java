@@ -15,10 +15,6 @@ public class ClickEventFactory {
             "San Francisco","San Francisco", "San Diego", "Dallas", "San Jose"
     );
 
-    private static final List<String> DEVICE_TYPES = Arrays.asList(
-            "mobile","mobile","mobile", "desktop"
-    );
-
     private static final List<String> CATEGORIES = Arrays.asList(
             "electronics", "electronics", "fashion", "fashion", "sports", "home", "home","beauty","beauty", "toys", "automotive", "books"
     );
@@ -51,16 +47,14 @@ public class ClickEventFactory {
 
     public static ClickEvent generateRandomClickEvent() {
         String eventId = UUID.randomUUID().toString();
-        String userId = String.valueOf(random.nextInt(1000000));
         String adId = String.valueOf(random.nextInt(20000));
         String location = LOCATIONS.get(random.nextInt(LOCATIONS.size()));
         long timestamp = generateRandomPastTimestamp(30, location);
-        String deviceType = DEVICE_TYPES.get(random.nextInt(DEVICE_TYPES.size()));
         String platform = PLATFORMS.get(random.nextInt(PLATFORMS.size()));
 
         String category = generateRandomCategory(location,platform);
 
-        return new ClickEvent(eventId, timestamp, userId, adId, location, deviceType, category, platform);
+        return new ClickEvent(eventId, timestamp, adId, location, category, platform);
     }
 
 

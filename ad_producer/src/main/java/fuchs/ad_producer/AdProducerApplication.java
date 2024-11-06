@@ -39,7 +39,7 @@ public class AdProducerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdProducerApplication.class, args);
-		produceMessages(50,1,true);
+		produceMessages(1000,1,true);
 	}
 
 	public static void produceMessages(int messagesNum, int period, boolean log){
@@ -54,10 +54,8 @@ public class AdProducerApplication {
 					GenericRecord record = new GenericData.Record(schema);
 					record.put("event_id", randomEvent.getEventId());
 					record.put("timestamp", randomEvent.getTimestamp());
-					record.put("user_id", randomEvent.getUserId());
 					record.put("ad_id", randomEvent.getAdId());
 					record.put("location", randomEvent.getLocation());
-					record.put("device_type", randomEvent.getDeviceType());
 					record.put("category", randomEvent.getCategory());
 					record.put("platform", randomEvent.getPlatform());
 
