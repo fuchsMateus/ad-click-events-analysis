@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "ClickEvent",
+  "namespace": "fuchs.events",
+  "fields": [
+    {"name": "event_id", "type": "string"},
+    {"name": "timestamp", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "user_id", "type": "string"},
+    {"name": "ad_id", "type": "string"},
+    {"name": "location", "type": "string"},
+    {"name": "device_type", "type": "string"},
+    {"name": "category", "type": "string"},
+    {"name": "platform", "type": "string"}
+  ]
+}
