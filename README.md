@@ -1,4 +1,4 @@
-# Add Click Event Analysis Application
+# Ad Click Event Analysis Application
 
 This application analyzes click events from fictitious online ads, focusing on metrics like product categories with the highest engagement across regions and platforms (e.g., Facebook, Google Ads).
 
